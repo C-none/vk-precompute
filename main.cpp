@@ -36,11 +36,11 @@ constexpr uint32_t HEIGHT = 800;
 constexpr uint32_t MODEL_COUNT = 100;
 constexpr uint16_t ENABLE_THREAD_NUM = 16;
 constexpr bool ENABLE_CORRECTION = true;
-//Ä£ĞÍÂ·¾¶Ä¿Â¼£¬ÊµÀı»¯Êı¾İÂ·¾¶£¬Êä³öÄ¿Â¼Â·¾¶
+//æ¨¡å‹è·¯å¾„ç›®å½•ï¼Œå®ä¾‹åŒ–æ•°æ®è·¯å¾„ï¼Œè¾“å‡ºç›®å½•è·¯å¾„
 std::string model_path = std::filesystem::current_path().string() + std::string(R"(\model\obj\)");
 std::string instance_path = std::filesystem::current_path().string() + std::string(R"(\model\matrices_all.json)");
 std::string write_path = std::filesystem::current_path().string() + std::string(R"(\output\)");
-//×óÏÂ½Ç£¬ÓÒÉÏ½Ç£¬²½³¤
+//å·¦ä¸‹è§’ï¼Œå³ä¸Šè§’ï¼Œæ­¥é•¿
 constexpr glm::vec3 src{ 2154,1918,0 }, dst{ 2260,1842,54 };
 constexpr glm::vec<3, uint64_t> step{ 5,5,5 };
 glm::vec3 get_pos(uint64_t id)
@@ -855,7 +855,7 @@ private:
 
 		ifstream in(instance_path);
 		auto read12float = [&]() {array<float, 12>ret{ 0 }; char ch;	for (int i = 0; i < 12; ++i)in >> ret[i] >> ch; return ret;	};
-		//Èı¸öĞĞÏòÁ¿×ª»»³ÉËÄ¸öÁĞÏòÁ¿
+		//ä¸‰ä¸ªè¡Œå‘é‡è½¬æ¢æˆå››ä¸ªåˆ—å‘é‡
 		auto fit2glsl = [](array<float, 12>&& input) { array<float, 12> res{ 0 }; for (int i = 0; i < 12; ++i)res[i / 4 + 3 * (i % 4)] = input[i]; return res; };
 		for (uint32_t i = 0; i < MODEL_COUNT; ++i)
 		{
@@ -1389,7 +1389,7 @@ private:
 		deque<atomic<double>> ret_arr;
 		for (int i = 0; i < MODEL_COUNT; ++i)
 			ret_arr.emplace_back(0);
-		//±£ÁôÒ»¸öÏß³Ì²»Ó°ÏìÊä³ö
+		//ä¿ç•™ä¸€ä¸ªçº¿ç¨‹ä¸å½±å“è¾“å‡º
 		if (ENABLE_THREAD_NUM > 1)
 			omp_set_num_threads(ENABLE_THREAD_NUM - 1);
 #ifdef enable_multithread
@@ -1478,7 +1478,7 @@ private:
 
 		result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
-		output_data[frame_count % 6] = compute_visibility();
+		output_data[(frame_count-1) % 6] = compute_visibility();
 
 		if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
 			framebufferResized = false;
@@ -1693,7 +1693,7 @@ private:
 
 		return VK_FALSE;
 	}
-	//ËÄ·ÖÖ®Ò»´óĞ¡£¬ÆäËü¶Ô³Æ
+	//å››åˆ†ä¹‹ä¸€å¤§å°ï¼Œå…¶å®ƒå¯¹ç§°
 	static std::array<std::array<double, HEIGHT / 2>, WIDTH / 2> solid_angle_table;
 
 	constexpr static void precompute_solid_angle()
@@ -1738,7 +1738,7 @@ private:
 					const auto& handon = data2write[id];
 					for (uint32_t i = 0; i < MODEL_COUNT; ++i)
 						if (abs(handon[i]) > 1e-15)
-							out << format("{:} {:.16}\n", i, handon[i]);
+							out << format("{:} {:.16}\n", i, double((handon[i]));
 					out << endl;
 				}
 				out.close();
