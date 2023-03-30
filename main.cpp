@@ -1478,7 +1478,7 @@ private:
 
 		result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
-		output_data[(frame_count-1) % 6] = compute_visibility();
+		output_data[frame_count% 6] = compute_visibility();
 
 		if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
 			framebufferResized = false;
