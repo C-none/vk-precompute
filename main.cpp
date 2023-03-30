@@ -49,7 +49,7 @@ glm::vec3 get_pos(uint64_t id)
 	return { x * (id / ((step.y + 1) * (step.z + 1))) + src.x,y * (id % ((step.y + 1) * (step.z + 1)) / (step.z + 1)) + src.y,z * (id % (step.z + 1)) + src.z };
 }
 
-constexpr int MAX_FRAMES_IN_FLIGHT = 1;
+int MAX_FRAMES_IN_FLIGHT = 1;
 
 const std::vector<const char*> validationLayers = {
 	"VK_LAYER_KHRONOS_validation"
@@ -441,7 +441,7 @@ private:
 		if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
 			imageCount = swapChainSupport.capabilities.maxImageCount;
 		}
-
+		MAX_FRAMES_IN_FLIGHT = imageCount;
 		VkSwapchainCreateInfoKHR createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 		createInfo.surface = surface;
