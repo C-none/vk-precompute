@@ -5,5 +5,7 @@
 
 ## Function
 input format: .obj(examples in model folder)
+
 compute solid angle of each object in scene in every sample position.
+
 output format: .txt
